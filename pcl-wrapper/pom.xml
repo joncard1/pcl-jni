@@ -18,12 +18,14 @@
   </properties>
 
   <build>
+    <finalName>lib${project.artifactId}</finalName>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>native-maven-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
+          <javahOS>linux</javahOS>
           <sources>
             <source>
               <directory>src/main/native</directory>
@@ -31,8 +33,23 @@
                 <include>**/*.cpp</include>
               </includes>
             </source>
+            <source>
+              <directory>/usr/include/eigen3</directory>
+              <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
+            </source>
+            <source>
+              <directory>/usr/include/pcl-1.7</directory>
+              <dependencyAnalysisParticipation>false</dependencyAnalysisParticipation>
+            </source>
           </sources>
           <javahSearchJNIFromDependencies>true</javahSearchJNIFromDependencies>
+          <compilerStartOptions>
+            <compilerStartOption>-fPIC</compilerStartOption>
+          </compilerStartOptions>
+          <linkerStartOptions>
+            <linkerStartOption>-shared</linkerStartOption> 
+          </linkerStartOptions>
+          <linkerFinalName>lib${project.artifactId}</linkerFinalName>
         </configuration>
       </plugin>
     </plugins>

@@ -4,7 +4,7 @@ import com.jackflashtech.pcl.*;
 
 public class PointXYZImpl implements PointXYZ {
 
-     private int handler = 0;
+     private long handler = 0;
 
      public PointXYZImpl() {
           this(0.0f, 0.0f, 0.0f);
@@ -14,19 +14,20 @@ public class PointXYZImpl implements PointXYZ {
           createPoint(x, y, z);
      }
 
-     public float getX() {
-          return 0;
-     }
+     public synchronized native float getX();
 
-     public float getY() {
-          return 0;
-     }
+     public synchronized native void setX(float x);
 
-     public float getZ() {
-          return 0;
-     }
+     public synchronized native float getY();
+
+     public synchronized native void setY(float Y);
+
+     public synchronized native float getZ();
+
+     public synchronized native void setZ(float z);
 
      private synchronized native int createPoint(float x, float y, float z) throws UnsatisfiedLinkError;
 
+     public native void finalize(); 
      //private synchronized static native int createPoint(float x, float y, float z) throws UnsatisfiedLinkError;
 }
