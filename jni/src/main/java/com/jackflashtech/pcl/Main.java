@@ -1,6 +1,7 @@
 package com.jackflashtech.pcl;
 
 import com.jackflashtech.pcl.impl.PointXYZImpl;
+import com.jackflashtech.pcl.impl.PointCloudPointXYZImpl;
 
 public class Main {
      public static void main(String[] args) throws Exception {
@@ -14,6 +15,20 @@ public class Main {
           System.out.println("X: " + pt1.getX());
           System.out.println("Y: " + pt1.getY());
           System.out.println("Z: " + pt1.getZ());
+
+          PointCloud cloud = new PointCloudPointXYZImpl(10, 20, false);
+          System.out.println("Height: " + cloud.getHeight());
+          System.out.println("Width: " + cloud.getWidth());
+          System.out.println("Is Dense: " + cloud.isDense());
+
+          cloud.setHeight(30);
+          cloud.setWidth(40);
+          cloud.setIsDense(true);
+          System.out.println("Height: " + cloud.getHeight());
+          System.out.println("Width: " + cloud.getWidth());
+          System.out.println("Is Dense: " + cloud.isDense());
+
+          System.out.println("Points: " + ( cloud.getPoints() == null ? "null" : "not null"));
 
           PointXYZ pt2 = new PointXYZImpl();
      }
