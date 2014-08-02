@@ -31,5 +31,13 @@ public class Main {
           System.out.println("Points: " + ( cloud.getPoints() == null ? "null" : "not null"));
 
           PointXYZ pt2 = new PointXYZImpl();
+          pt2.setX(4.0f);
+          pt2.setY(5.0f);
+          pt2.setZ(6.0f);
+
+          cloud.getPoints().add(0, pt1);
+          cloud.getPoints().add(1, pt2);
+
+
      }
 }

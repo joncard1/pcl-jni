@@ -15,6 +15,7 @@ JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_impl_PointCloudPointXYZImpl_se
 	pcl::PointCloud<pcl::PointXYZ> *cloud = (pcl::PointCloud<pcl::PointXYZ> *)handle;
 
 	cloud->height = height;
+	cloud->points.resize(cloud->height * cloud->width);
 }
 
 JNIEXPORT jint JNICALL Java_com_jackflashtech_pcl_impl_PointCloudPointXYZImpl_getWidth (JNIEnv *env, jobject object, jlong handle) {
@@ -27,6 +28,7 @@ JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_impl_PointCloudPointXYZImpl_se
 	pcl::PointCloud<pcl::PointXYZ> *cloud = (pcl::PointCloud<pcl::PointXYZ> *)handle;
 
 	cloud->width = width;
+	cloud->points.resize(cloud->height * cloud->width);
 }
 
 JNIEXPORT jboolean JNICALL Java_com_jackflashtech_pcl_impl_PointCloudPointXYZImpl_isDense (JNIEnv *env, jobject object, jlong handle) {
@@ -47,9 +49,10 @@ JNIEXPORT jlong JNICALL Java_com_jackflashtech_pcl_impl_PointCloudPointXYZImpl_c
 	new_cloud->width = width;
 	new_cloud->is_dense = is_dense;
 
-	jclass cls = env->FindClass("java/util/ArrayList");
-	jmethodID methodID = env->GetMethodID(cls, "<init>", "()V");
-	jobject a = env->NewObject(cls, methodID);
+	jclass cls = env->FindClass("com/jackflashtech/pcl/impl/PointsList");
+	jmethodID methodID = env->GetMethodID(cls, "<init>", "(J)V");
+	jvalue args[1] = {(jlong)&new_cloud->points};
+	jobject a = env->NewObject(cls, methodID, args);
 
 	jfieldID l_pointsId = env->GetFieldID( env->GetObjectClass( object ), "points", "Ljava/util/List;" );
 	env->SetObjectField(object, l_pointsId, a);
