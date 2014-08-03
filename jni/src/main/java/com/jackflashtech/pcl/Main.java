@@ -2,6 +2,7 @@ package com.jackflashtech.pcl;
 
 import com.jackflashtech.pcl.impl.PointXYZImpl;
 import com.jackflashtech.pcl.impl.PointCloudPointXYZImpl;
+import java.util.List;
 
 public class Main {
      public static void main(String[] args) throws Exception {
@@ -35,8 +36,13 @@ public class Main {
           pt2.setY(5.0f);
           pt2.setZ(6.0f);
 
-          cloud.getPoints().add(0, pt1);
+          System.out.println("Hi");
+          List points = cloud.getPoints();
+          System.out.println("There");
+          points.add(0, pt1);
           cloud.getPoints().add(1, pt2);
+
+          System.out.println("Size: " + cloud.getPoints().size());
 
 
      }
