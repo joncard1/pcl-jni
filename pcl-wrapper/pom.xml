@@ -60,5 +60,17 @@
       <artifactId>jni</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>pcl</groupId>
+      <artifactId>pcl_common</artifactId>
+      <version>1.7.1</version>
+      <type>so</type>
+    </dependency>
+    <dependency>
+      <groupId>pcl</groupId>
+      <artifactId>pcl_features</artifactId>
+      <version>1.7.1</version>
+      <type>so</type>
+    </dependency>
   </dependencies>
 </project>

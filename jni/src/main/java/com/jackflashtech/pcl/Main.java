@@ -2,12 +2,20 @@ package com.jackflashtech.pcl;
 
 import com.jackflashtech.pcl.impl.PointXYZImpl;
 import com.jackflashtech.pcl.impl.PointCloudPointXYZImpl;
+import com.jackflashtech.pcl.impl.PointCloudNormalImpl;
 import java.util.List;
+import com.jackflashtech.pcl.features.NormalEstimation;
+import com.jackflashtech.pcl.features.impl.NormalEstimationImpl;
+import com.jackflashtech.pcl.search.KdTree;
+import com.jackflashtech.pcl.search.impl.KdTreePointXYZ;
 
 public class Main {
      public static void main(String[] args) throws Exception {
           System.out.println(System.getProperty("java.library.path"));
+          System.loadLibrary("pcl_common");
+          System.loadLibrary("pcl_features");
           System.loadLibrary("pcl-wrapper");
+
            
           PointXYZ pt1 = new PointXYZImpl();
           pt1.setX(1.0f);
@@ -44,6 +52,15 @@ public class Main {
 
           System.out.println("Size: " + cloud.getPoints().size());
 
+          NormalEstimation ne = new NormalEstimationImpl();
+          System.out.println("NormalEstimation created.");
+          ne.setInputCloud(cloud);
+          ne.setSearchMethod(new KdTreePointXYZ());
+          ne.setRadiusSearch(5);
+          System.out.println("Normal Estimation initialized.");
 
+          PointCloud normal_cloud = new PointCloudNormalImpl();
+          ne.compute(normal_cloud);
+          System.out.println("Normal cloud computed.");
      }
 }
