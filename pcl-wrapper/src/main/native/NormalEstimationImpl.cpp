@@ -14,10 +14,9 @@ JNIEXPORT jlong JNICALL Java_com_jackflashtech_pcl_features_impl_NormalEstimatio
 JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_features_impl_NormalEstimationImpl_setInputCloud (JNIEnv *env, jobject object, jobject input_cloud, jlong handle) {
 	// TODO: Check that input_cloud is a PointCloud, or something.	
 	jfieldID l_handleId = env->GetFieldID( env->GetObjectClass( input_cloud ), "handle", "J" );
-	pcl::PointCloud< pcl::PointXYZ > *input_cloud_c = (pcl::PointCloud< pcl::PointXYZ > *)env->GetLongField( input_cloud, l_handleId );
+	pcl::PointCloud< pcl::PointXYZ >::Ptr *p_input_cloud = (pcl::PointCloud< pcl::PointXYZ >::Ptr *)env->GetLongField( input_cloud, l_handleId );
 
-	pcl::PointCloud< pcl::PointXYZ >::Ptr input_cloud_ptr (input_cloud_c);
-	((pcl::NormalEstimation< pcl::PointXYZ, pcl::Normal > *)handle)->setInputCloud(input_cloud_ptr);
+	((pcl::NormalEstimation< pcl::PointXYZ, pcl::Normal > *)handle)->setInputCloud((*p_input_cloud));
 }
 
 JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_features_impl_NormalEstimationImpl_setSearchMethod (JNIEnv *env, jobject object, jobject tree, jlong handle) {
@@ -32,6 +31,14 @@ JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_features_impl_NormalEstimation
 	((pcl::NormalEstimation< pcl::PointXYZ, pcl::Normal > *)handle)->setRadiusSearch( radius );
 }
 
-JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_features_impl_NormalEstimationImpl_compute (JNIEnv *env, jobject object, jobject normal_cloud, jlong handle) {
+JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_features_impl_NormalEstimationImpl_compute (JNIEnv *env, jobject object, jobject output_cloud, jlong handle) {
+	jfieldID l_handleId = env->GetFieldID( env->GetObjectClass( output_cloud ), "handle", "J" ); 
+	pcl::PointCloud< pcl::Normal > *output_cloud_c = (pcl::PointCloud< pcl::Normal > *)env->GetLongField( output_cloud, l_handleId );
 
+	pcl::NormalEstimation< pcl::PointXYZ, pcl::Normal > *ne = (pcl::NormalEstimation< pcl::PointXYZ, pcl::Normal > *)handle;
+	//pcl::PointCloud< pcl::Normal >::Ptr output_cloud_ptr (output_cloud_c);
+
+	ne->compute( *output_cloud_c );
+
+	std::cout << "First point: X: " << output_cloud_c->points[0].normal_x << ", Y: " << output_cloud_c->points[0].normal_y << ", Z: " << output_cloud_c->points[0].normal_z << "\n";
 }

@@ -17,6 +17,7 @@
   <modules>
     <module>jni</module>
     <module>pcl-wrapper</module>
+    <module>tests</module>
   </modules>
 
   <dependencies>

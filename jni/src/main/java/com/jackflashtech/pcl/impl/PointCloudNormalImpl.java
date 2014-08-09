@@ -1,13 +1,13 @@
 package com.jackflashtech.pcl.impl;
 
 import com.jackflashtech.pcl.PointCloud;
-import com.jackflashtech.pcl.PointXYZ;
+import com.jackflashtech.pcl.Normal;
 import java.util.List;
 import java.util.ArrayList;
 
-public class PointCloudNormalImpl implements PointCloud {
+public class PointCloudNormalImpl implements PointCloud<Normal> {
 	private long handle;
-	private List<PointXYZ> points;
+	private List<Normal> points;
 	
 	public PointCloudNormalImpl() {
 		this(0, 0, false);
@@ -41,9 +41,15 @@ public class PointCloudNormalImpl implements PointCloud {
 		setIsDense(isDense, handle);
 	}
 
-	public List<PointXYZ> getPoints() {
+	public List<Normal> getPoints() {
 		return points;
 	}
+
+	public void resize() {
+		resize(handle);
+	}
+
+	synchronized private native void resize(long handle);
 
 	public void finalize() {
 		finalize(handle);

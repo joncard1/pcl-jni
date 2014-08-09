@@ -8,6 +8,11 @@ import com.jackflashtech.pcl.features.NormalEstimation;
 import com.jackflashtech.pcl.features.impl.NormalEstimationImpl;
 import com.jackflashtech.pcl.search.KdTree;
 import com.jackflashtech.pcl.search.impl.KdTreePointXYZ;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 public class Main {
      public static void main(String[] args) throws Exception {
@@ -17,40 +22,34 @@ public class Main {
           System.loadLibrary("pcl-wrapper");
 
            
-          PointXYZ pt1 = new PointXYZImpl();
-          pt1.setX(1.0f);
-          pt1.setY(2.0f);
-          pt1.setZ(3.0f);
-          System.out.println("X: " + pt1.getX());
-          System.out.println("Y: " + pt1.getY());
-          System.out.println("Z: " + pt1.getZ());
-
           PointCloud cloud = new PointCloudPointXYZImpl(10, 20, false);
-          System.out.println("Height: " + cloud.getHeight());
+          
+          Connection conn = null;
+          Properties connectionProps = new Properties();
+          connectionProps.put("user", "root");
+          connectionProps.put("password", "Aeroty1a");
+
+          conn = DriverManager.getConnection("jdbc:mysql://localhost/points", connectionProps);
+          Statement stmt  = conn.createStatement();
+          ResultSet rs = stmt.executeQuery("SELECT x, y, z, (SELECT COUNT(*) FROM points) total_rows FROM points;");
+          cloud.setWidth(1);
           System.out.println("Width: " + cloud.getWidth());
-          System.out.println("Is Dense: " + cloud.isDense());
-
-          cloud.setHeight(30);
-          cloud.setWidth(40);
-          cloud.setIsDense(true);
-          System.out.println("Height: " + cloud.getHeight());
-          System.out.println("Width: " + cloud.getWidth());
-          System.out.println("Is Dense: " + cloud.isDense());
-
-          System.out.println("Points: " + ( cloud.getPoints() == null ? "null" : "not null"));
-
-          PointXYZ pt2 = new PointXYZImpl();
-          pt2.setX(4.0f);
-          pt2.setY(5.0f);
-          pt2.setZ(6.0f);
-
-          System.out.println("Hi");
-          List points = cloud.getPoints();
-          System.out.println("There");
-          points.add(0, pt1);
-          cloud.getPoints().add(1, pt2);
-
-          System.out.println("Size: " + cloud.getPoints().size());
+          cloud.setIsDense(false);
+          boolean first = true;
+          int j = 0;
+          while(rs.next()) {
+               if(first) {
+                    cloud.setHeight(rs.getInt(4));
+                    cloud.setWidth(1);
+                    cloud.resize();
+                    first = false;
+               }
+               float x = rs.getFloat(1);
+               float y = rs.getFloat(2);
+               float z = rs.getFloat(3);
+               cloud.getPoints().add(j, new PointXYZImpl(x, y, z));
+               j++;
+          }
 
           NormalEstimation ne = new NormalEstimationImpl();
           System.out.println("NormalEstimation created.");
@@ -61,6 +60,14 @@ public class Main {
 
           PointCloud normal_cloud = new PointCloudNormalImpl();
           ne.compute(normal_cloud);
-          System.out.println("Normal cloud computed.");
+          System.out.println("Normals: " + ( normal_cloud.getPoints() == null ? "null" : "not null"));
+          System.out.println("Normal cloud computed: " + normal_cloud.getPoints().size());
+
+          List<Normal> normals = normal_cloud.getPoints();
+          System.out.println("Got normals.");
+          for(int i = 0; i < normals.size(); i++) {
+               Normal normal = normals.get(i);
+               System.out.println("X: " + normal.getX() + ", Y: " + normal.getY() + ", Z: " + normal.getZ());
+          }
      }
 }

@@ -5,7 +5,7 @@ import com.jackflashtech.pcl.PointXYZ;
 import java.util.List;
 import java.util.ArrayList;
 
-public class PointCloudPointXYZImpl implements PointCloud {
+public class PointCloudPointXYZImpl implements PointCloud<PointXYZ> {
 	private long handle;
 	private List<PointXYZ> points;
 	
@@ -44,6 +44,12 @@ public class PointCloudPointXYZImpl implements PointCloud {
 	public List<PointXYZ> getPoints() {
 		return points;
 	}
+
+	public void resize() {
+		resize(handle);
+	}
+
+	private synchronized native void resize(long handle);
 
 	public void finalize() {
 		finalize(handle);
