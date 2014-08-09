@@ -1,27 +1,28 @@
 package com.jackflashtech.pcl.impl;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
+import org.junit.Before;
+import static org.junit.Assert.*;
 
 import com.jackflashtech.pcl.Normal;
 
 public class TestNormalImpl {
 
-    /**
-     * @Before
-     */
+    @Before
     public void setUp() {
         System.loadLibrary("pcl-wrapper");
     }
 
-    /**
-     * @Test
-     */
+    @Test
     public void testCreate() {
-	System.out.println(System.getProperty("java.library.path"));
-        System.loadLibrary("pcl-wrapper");
-
         Normal normal = new NormalImpl();
+    }
+
+    @Test
+    public void testX() {
+        float xValue = 20f;
+        Normal normal = new NormalImpl();
+        normal.setX(xValue);
+        assertEquals(xValue, normal.getX(), 0.0001);
     }
 }
