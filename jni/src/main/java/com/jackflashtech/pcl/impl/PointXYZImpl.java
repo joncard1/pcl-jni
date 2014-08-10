@@ -14,6 +14,10 @@ public class PointXYZImpl implements PointXYZ {
           createPoint(x, y, z);
      }
 
+     public PointXYZImpl(long handle) {
+          handler = handle;
+     }
+
      public synchronized native float getX();
 
      public synchronized native void setX(float x);

@@ -42,7 +42,6 @@ JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_impl_PointCloudPointXYZImpl_se
 
 JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_impl_PointCloudPointXYZImpl_resize (JNIEnv *env, jobject object, jlong handle) {
 	pcl::PointCloud<pcl::PointXYZ>::Ptr *p_cloud = (pcl::PointCloud<pcl::PointXYZ>::Ptr *)handle;
-	std::cout << "Height: " << (*p_cloud)->height << ", Width: " << (*p_cloud)->width << "\n";
 	(*p_cloud)->resize((*p_cloud)->height * (*p_cloud)->width);
 }
 

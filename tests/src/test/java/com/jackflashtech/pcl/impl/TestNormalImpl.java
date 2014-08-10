@@ -25,4 +25,20 @@ public class TestNormalImpl {
         normal.setX(xValue);
         assertEquals(xValue, normal.getX(), 0.0001);
     }
+
+    @Test
+    public void testY() {
+        float yValue = 30f;
+        Normal normal = new NormalImpl();;
+        normal.setY(yValue);
+        assertEquals(yValue, normal.getY(), 0.0001);
+    }
+
+    @Test
+    public void testZ() {
+        float zValue = 40f;
+        Normal normal = new NormalImpl();
+        normal.setZ(zValue);
+        assertEquals(zValue, normal.getZ(), 0.0001);
+    }
 }

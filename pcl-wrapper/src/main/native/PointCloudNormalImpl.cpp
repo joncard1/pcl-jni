@@ -12,7 +12,6 @@ JNIEXPORT jlong JNICALL Java_com_jackflashtech_pcl_impl_PointCloudNormalImpl_cre
 	jmethodID methodID = env->GetMethodID(cls, "<init>", "(J)V");
 	jvalue args[1];
 	args[0].j = (jlong)&((*p_new_cloud)->points);
-	std::cout << "New Handle: " << args[0].j << "\n";
 	jobject a = env->NewObjectA(cls, methodID, args);
 
 	jfieldID l_pointsId = env->GetFieldID( env->GetObjectClass( object ), "points", "Ljava/util/List;" );
@@ -65,7 +64,7 @@ JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_impl_PointCloudNormalImpl_resi
 }
 
 JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_impl_PointCloudNormalImpl_finalize (JNIEnv *env, jobject object, jlong handle) {
-	pcl::PointCloud<pcl::PointNormal>::Ptr *p_cloud = (pcl::PointCloud<pcl::PointNormal>::Ptr *)handle;
+	pcl::PointCloud<pcl::Normal>::Ptr *p_cloud = (pcl::PointCloud<pcl::Normal>::Ptr *)handle;
 
 	delete p_cloud;
 }

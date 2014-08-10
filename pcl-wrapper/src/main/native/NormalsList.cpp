@@ -8,7 +8,7 @@ JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_impl_NormalsList_add (JNIEnv *
 
 	// TODO: Check that the element is a PointXYZ;
 	jfieldID l_handleId = env->GetFieldID( env->GetObjectClass( element ), "handle", "J");
-	pcl::Normal *point = (pcl::Normal *)env->GetLongField(object, l_handleId);
+	pcl::Normal *point = (pcl::Normal *)env->GetLongField(element, l_handleId);
 
 	(*points)[index].normal_x = point->normal_x;
 	(*points)[index].normal_y = point->normal_y;
@@ -16,21 +16,13 @@ JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_impl_NormalsList_add (JNIEnv *
 }
 
 JNIEXPORT jobject JNICALL Java_com_jackflashtech_pcl_impl_NormalsList_get (JNIEnv *env, jobject object, jint index, jlong handle) {
-	std::cout << "Index: " << index << "\n";
-	std::cout << "Handle in get: " << handle << "\n";
 	std::vector<pcl::Normal, Eigen::aligned_allocator<pcl::Normal> > *points = (std::vector<pcl::Normal, Eigen::aligned_allocator<pcl::Normal> > *)handle;
-	std::cout << "Getting point\n";
 	pcl::Normal return_value = (*points)[index];
 
-	std::cout << "In get: X: " << return_value.normal_x << ", Y: " << return_value.normal_y << ", Z: " << return_value.normal_z << "\n";
-
-	std::cout << "Getting class\n";
 	jclass cls = env->FindClass("com/jackflashtech/pcl/impl/NormalImpl");
-	std::cout << "Getting method\n";
 	jmethodID methodID = env->GetMethodID(cls, "<init>", "(J)V");
 	jvalue args[1];
 	args[0].j = (jlong)&((*points)[index]);
-	std::cout << "Invoking method\n";
 	jobject j_return_value;
 	j_return_value = env->NewObjectA(cls, methodID, args);
 

@@ -1,5 +1,6 @@
 package com.jackflashtech.pcl.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -9,10 +10,10 @@ import com.jackflashtech.pcl.PointXYZ;
 public class NormalsList<E> implements List<E> {
 
 	private long handle;
+	private List<E> internalList = new ArrayList<E>();
 
 	public NormalsList(long handle) {
 		this.handle = handle;	
-		System.out.println("Handle: " + handle);
 	}
 
 	public boolean add(E e) {
@@ -21,6 +22,7 @@ public class NormalsList<E> implements List<E> {
 	
 	public void add(int index, E element) {
 		add(handle, index, element);
+		internalList.add(index, element);
 	}
 
 	private native synchronized void add(long handle, int index, E element);

@@ -1,5 +1,6 @@
 package com.jackflashtech.pcl.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -9,6 +10,10 @@ import com.jackflashtech.pcl.PointXYZ;
 public class PointsList<E> implements List<E> {
 
 	private long handle;
+	/**
+         * This is just to keep pointers to the object alive to keep points from being deleted.
+         */
+	private List<E> internalPoints = new ArrayList<E>();
 
 	public PointsList(long handle) {
 		this.handle = handle;	
@@ -20,6 +25,7 @@ public class PointsList<E> implements List<E> {
 	
 	public void add(int index, E element) {
 		add(handle, index, element);
+		internalPoints.add(index, element);
 	}
 
 	private native synchronized void add(long handle, int index, E element);
@@ -48,9 +54,11 @@ public class PointsList<E> implements List<E> {
 		throw new UnsupportedOperationException("I haven't implemented this yet.");
 	}
 
-	public E get(int index) {
-		throw new UnsupportedOperationException("I haven't implemented this yet.");
-	}
+        public E get(int index) {
+                return get(index, handle);
+        }
+
+        private synchronized native E get(int index, long handle);
 
 	public int hashCode() {
 		throw new UnsupportedOperationException("I haven't implemented this yet.");

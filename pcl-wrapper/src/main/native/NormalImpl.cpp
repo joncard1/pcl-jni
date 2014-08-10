@@ -26,7 +26,6 @@ JNIEXPORT jlong JNICALL Java_com_jackflashtech_pcl_impl_NormalImpl_createNormal 
 JNIEXPORT jfloat JNICALL Java_com_jackflashtech_pcl_impl_NormalImpl_getX (JNIEnv *env, jobject object, jlong handle) {
 	pcl::Normal *normal = (pcl::Normal *)handle;
 	
-	std::cout << "In Get X: " << normal->normal_x << "\n";
 	return normal->normal_x;
 }
 
