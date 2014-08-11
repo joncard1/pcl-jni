@@ -19,8 +19,6 @@ JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_features_impl_NormalEstimation
 	pcl::PointCloud< pcl::PointXYZ >::Ptr *p_input_cloud = (pcl::PointCloud< pcl::PointXYZ >::Ptr *)env->GetLongField( input_cloud, l_handleId );
 	g_input_cloud = p_input_cloud;
 
-	std::cout << "test x: " << (*g_input_cloud)->points[0].x << "\n";
-
 	((pcl::NormalEstimation< pcl::PointXYZ, pcl::Normal > *)handle)->setInputCloud((*p_input_cloud));
 }
 
@@ -41,12 +39,5 @@ JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_features_impl_NormalEstimation
 
 	pcl::NormalEstimation< pcl::PointXYZ, pcl::Normal > *ne = (pcl::NormalEstimation< pcl::PointXYZ, pcl::Normal > *)handle;
 
-	pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());
-        ne->setSearchMethod(tree);
-
-	std::cout << "test2 x: " << (*g_input_cloud)->points[0].x << "\n";
-
 	ne->compute( *(*p_output_cloud) );
-
-	std::cout << "First point: X: " << (*p_output_cloud)->points[0].normal_x << ", Y: " << (*p_output_cloud)->points[0].normal_y << ", Z: " << (*p_output_cloud)->points[0].normal_z << "\n";
 }

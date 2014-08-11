@@ -5,11 +5,11 @@
   <parent>
     <groupId>com.jackflashtech.pcl</groupId>
     <artifactId>master</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
   </parent>
   <groupId>com.jackflashtech.pcl</groupId>
   <artifactId>pcl-wrapper</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   <name>pcl-wrapper</name>
   <packaging>so</packaging>
   <url>http://maven.apache.org</url>
@@ -18,7 +18,6 @@
   </properties>
 
   <build>
-    <finalName>lib${project.artifactId}</finalName>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -49,7 +48,7 @@
           <linkerStartOptions>
             <linkerStartOption>-shared</linkerStartOption> 
           </linkerStartOptions>
-          <linkerFinalName>lib${project.artifactId}</linkerFinalName>
+          <!--linkerFinalName>lib${project.artifactId}</linkerFinalName-->
         </configuration>
       </plugin>
     </plugins>

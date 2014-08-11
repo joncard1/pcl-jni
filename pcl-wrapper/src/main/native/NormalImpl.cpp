@@ -60,8 +60,8 @@ JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_impl_NormalImpl_setZ (JNIEnv *
 }
 
 JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_impl_NormalImpl_finalize (JNIEnv *env, jobject object, jlong handle) {
-     // TODO: This is probably bad. See if we can use a smart pointer instead.
      pcl::Normal *normal = (pcl::Normal *)handle;
 
-    delete normal;
+    // TODO: This is commented out because it was causing a double delete. I suspect it is because items were being deleted that were part of the allocated array inside of a PointCloud. I think I need another implementation of Normal that doesn't call this method on finalize.
+    //delete normal;
 } 
