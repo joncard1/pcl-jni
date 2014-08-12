@@ -15,6 +15,12 @@ public class PointsList<E> implements List<E> {
          */
 	private List<E> internalPoints = new ArrayList<E>();
 
+	public PointsList() {
+		this.handle = createList();
+	}
+
+	private native synchronized long createList();
+
 	public PointsList(long handle) {
 		this.handle = handle;	
 	}
@@ -31,7 +37,14 @@ public class PointsList<E> implements List<E> {
 	private native synchronized void add(long handle, int index, E element);
 	
 	public boolean addAll(Collection<? extends E> c) {
-		throw new UnsupportedOperationException("I haven't implemented this yet.");
+		Iterator<? extends E> it = c.iterator();
+		int i = 0;
+		while(it.hasNext()) {
+			this.add(i, it.next());
+			i++;	
+		}
+
+		return true;
 	}
 
 	public boolean addAll(int index, Collection<? extends E> c) {

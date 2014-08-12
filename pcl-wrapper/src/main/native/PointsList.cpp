@@ -3,6 +3,33 @@
 #include <pcl/point_cloud.h>
 #include <com_jackflashtech_pcl_impl_PointsList.h>
 
+JNIEXPORT jlong JNICALL Java_com_jackflashtech_pcl_impl_PointsList_createList (JNIEnv *env, jobject object) {
+
+        try {
+                std::vector<pcl::PointXYZ, Eigen::aligned_allocator<pcl::PointXYZ> > *new_list = new std::vector<pcl::PointXYZ, Eigen::aligned_allocator<pcl::PointXYZ> >();
+
+                return (jlong)new_list;
+        } catch (std::bad_alloc& ba) {
+                char *exClassName = "com/jackflashtech/pcl/PclException";
+                jclass exClass = env->FindClass( exClassName );
+                if( exClass == NULL ) {
+                        exClass = env->FindClass( "java/lang/NoClassDefFoundError" );
+                        return env->ThrowNew( exClass, "Could not find com.jackflashtech.pcl.PclException" );
+                }
+
+                return env->ThrowNew( exClass, "Bad allocation creating points list.");
+        } catch (...) {
+		char *exClassName = "com/jackflashtech/pcl/PclException";
+		jclass exClass = env->FindClass( exClassName );
+		if( exClass == NULL) {
+			exClass = env->FindClass( "java/lang/NoClassDefFoundError" );
+			return env->ThrowNew( exClass, "Could not find com.jackflashtech.pcl.PclException" );
+		}
+
+		return env->ThrowNew( exClass, "Unknown exception creating points list.");
+	}
+}
+
 JNIEXPORT void JNICALL Java_com_jackflashtech_pcl_impl_PointsList_add (JNIEnv *env, jobject object, jlong handle, jint index, jobject element) {
 	std::vector<pcl::PointXYZ, Eigen::aligned_allocator<pcl::PointXYZ> > *points = (std::vector<pcl::PointXYZ, Eigen::aligned_allocator<pcl::PointXYZ> > *)handle;
 
